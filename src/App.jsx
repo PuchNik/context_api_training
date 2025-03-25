@@ -1,8 +1,8 @@
 import './App.css'
-import {personData, fruitData, personData2} from './helpers/index.js'
-import {Header, ProductBlock, UserBlock} from './components/index.js'
+import {fruitData, personData, personData2} from './helpers/index.js'
+import {Header, UserBlock, ProductBlock} from './components/index.js'
 import {ContextProvider} from "./contextAPI/ContextProvider.jsx"
-import {useEffect, useState} from "react"
+import {useEffect, useReducer} from "react"
 
 // Получение данных пользователя
 const getUserFromServer = (data) => data
@@ -27,35 +27,25 @@ const reducer = (state, action) => {
             }
         }
         default:
-        /// nothing
+            return state
     }
 }
 
 function App() {
-    const [userData, setUserData] = useState(personData)
-    const [productData, setProductData] = useState(fruitData)
-
-    const dispatchUser = (action) => {
-        const newStateUser = reducer(userData, action)
-        setUserData(newStateUser)
-    }
-
-    const dispatchProduct = (action) => {
-        const newStateProduct = reducer(productData, action)
-        setProductData(newStateProduct)
-    }
+    const [userData, dispatchUser] = useReducer(reducer, personData)
+    const [productData, dispatchProduct] = useReducer(reducer, fruitData)
 
     useEffect(() => {
         const userDataFromServer = getUserFromServer(personData)
-        const productDataFromServer = getProductFromServer(fruitData)
+        dispatchUser({type: 'SET_USER_DATA', payload: userDataFromServer})
 
-        setUserData(userDataFromServer)
-        setProductData(productDataFromServer)
+        const productDataFromServer = getProductFromServer(fruitData)
+        dispatchProduct({type: 'SET_PRODUCT_VARIETY', payload: productDataFromServer})
     }, [])
 
     const onUserChange = () => {
         const anotherUserFromServer = getAnotherUserFromServer(personData2)
-        setUserData(anotherUserFromServer)
+        dispatchUser({type: 'SET_USER_DATA', payload: anotherUserFromServer})
     }
 
     return (
