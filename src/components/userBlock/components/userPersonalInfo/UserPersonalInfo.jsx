@@ -2,11 +2,11 @@ import {useContext} from "react";
 import {UserContext} from "../../../../contextAPI/context.js"
 
 export const UserPersonalInfo = () => {
-    const {userData, dispatch} = useContext(UserContext)
+    const {userData, dispatchUser} = useContext(UserContext)
     const {name, age} = userData
 
     const onUserUpdate = () => {
-        dispatch({type: 'SET_USER_DATA', payload: {
+        dispatchUser({type: 'SET_USER_DATA', payload: {
             ...userData,
                 age: 24,
                 phone: '8-222-222-22-22'

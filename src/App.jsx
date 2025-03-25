@@ -1,8 +1,8 @@
 import './App.css'
 import {personData, fruitData, personData2} from './helpers/index.js'
 import {Header, ProductBlock, UserBlock} from './components/index.js'
-import {ContextProvider} from "./contextAPI/ContextProvider.jsx";
-import {useEffect, useState} from "react";
+import {ContextProvider} from "./contextAPI/ContextProvider.jsx"
+import {useEffect, useState} from "react"
 
 // Получение данных пользователя
 const getUserFromServer = (data) => data
@@ -13,30 +13,36 @@ const getProductFromServer = (data) => data
 // Получение данных другого пользователя
 const getAnotherUserFromServer = (data) => data
 
+const reducer = (state, action) => {
+    const {type, payload} = action
+
+    switch (type) {
+        case 'SET_USER_DATA': {
+            return payload
+        }
+        case 'SET_PRODUCT_VARIETY': {
+            return {
+                ...state,
+                variety: payload
+            }
+        }
+        default:
+        /// nothing
+    }
+}
 
 function App() {
     const [userData, setUserData] = useState(personData)
     const [productData, setProductData] = useState(fruitData)
 
-    const dispatch = (action) => {
-        const {type, payload} = action
+    const dispatchUser = (action) => {
+        const newStateUser = reducer(userData, action)
+        setUserData(newStateUser)
+    }
 
-        switch (type) {
-            case 'SET_USER_DATA': {
-                setUserData(payload)
-                break
-            }
-            case 'SET_PRODUCT_VARIETY': {
-                setProductData({
-                    ...productData,
-                    variety: payload
-                    }
-                )
-                break
-            }
-            default:
-                /// nothing
-        }
+    const dispatchProduct = (action) => {
+        const newStateProduct = reducer(productData, action)
+        setProductData(newStateProduct)
     }
 
     useEffect(() => {
@@ -54,7 +60,7 @@ function App() {
 
     return (
         <div>
-            <ContextProvider userValue={{userData, dispatch}} productValue={{productData, dispatch}}>
+            <ContextProvider userValue={{userData, dispatchUser}} productValue={{productData, dispatchProduct}}>
                 <Header/>
                 <hr/>
 
