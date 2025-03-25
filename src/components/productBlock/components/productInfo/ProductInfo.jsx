@@ -2,8 +2,12 @@ import {useContext} from "react";
 import {ProductContext} from "../../../../contextAPI/context.js"
 
 export const ProductInfo = () => {
-    const productData = useContext(ProductContext)
+    const {productData, dispatch} = useContext(ProductContext)
     const {name, variety, price, country} = productData
+
+    const onProductUpdate = () => {
+        dispatch({type: 'SET_PRODUCT_VARIETY', payload: 'red'})
+    }
 
     return (
         <div>
@@ -12,6 +16,9 @@ export const ProductInfo = () => {
             <div>Сорт: {variety}</div>
             <div>Цена: {price}</div>
             <div>Страна: {country}</div>
+            <hr/>
+
+            <button onClick={onProductUpdate}>Обновить данные продукта</button>
         </div>
     )
 }
