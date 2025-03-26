@@ -1,0 +1,47 @@
+1. useReducer — это хук в React, который позволяет управлять состоянием 
+компонента с помощью паттерна "редюсер". Он используется для более сложного 
+управления состоянием по сравнению с useState.
+
+2. reducer — это функция, которая принимает текущее состояние (state) и 
+действие (action), и возвращает новое состояние. Она определяет, как состояние 
+должно изменяться в ответ на различные действия.
+
+3. userData — это текущее состояние, которое управляется редюсером. 
+Оно инициализируется значением personData, которое передается как начальное состояние.
+
+4. dispatchUser — это функция, которая используется для отправки действий (actions) в редюсер. 
+Она не является самим действием, а служит для его вызова.
+
+5. action — это объект, который передается в dispatchUser. Он обычно содержит 
+как минимум свойство type, которое указывает, какое действие нужно выполнить, 
+и может содержать дополнительные данные (например, payload), которые могут быть 
+полезны для редюсера.
+
+Пример: 
+
+const getUserFromServer = (data) => data
+
+const reducer = (state, action) => {
+    const {type, payload} = action
+
+    switch (type) {
+        case 'SET_USER_DATA': {
+            return payload
+        }
+        case 'SET_PRODUCT_VARIETY': {
+            return {
+                ...state,
+                ... payload
+            }
+        }
+        default:
+            return state
+    }
+}
+
+const [userData, dispatchUser] = useReducer(reducer, personData)
+
+useEffect(() => {
+        const userDataFromServer = getUserFromServer(personData)
+        dispatchUser({type: 'SET_USER_DATA', payload: userDataFromServer})
+    }, [])
