@@ -23,7 +23,7 @@ const reducer = (state, action) => {
         case 'SET_PRODUCT_VARIETY': {
             return {
                 ...state,
-                variety: payload
+                ... payload
             }
         }
         default:

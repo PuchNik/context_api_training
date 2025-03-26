@@ -6,7 +6,7 @@ export const ProductInfo = () => {
     const {name, variety, price, country} = productData
 
     const onProductUpdate = () => {
-        dispatchProduct({type: 'SET_PRODUCT_VARIETY', payload: 'red'})
+        dispatchProduct({type: 'SET_PRODUCT_VARIETY', payload: {...productData, variety: 'red'}})
     }
 
     return (
